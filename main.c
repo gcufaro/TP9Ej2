@@ -9,10 +9,12 @@
 #include "allegro5/allegro.h"
 #include "allegro5/allegro_image.h"
 #include "allegro5/allegro_native_dialog.h"
+#include <allegro5/allegro_font.h>
+#include <allegro5/allegro_ttf.h>
 
 const float FPS = 60;
-const int SCREEN_W = 640;
-const int SCREEN_H = 480;
+const int SCREEN_W = 850;
+const int SCREEN_H = 600;
 const int BOUNCER_SIZE = 32;
 
 int main(int argc, char** argv) {
@@ -28,19 +30,19 @@ int main(int argc, char** argv) {
    ALLEGRO_BITMAP *LED6 = NULL;
    ALLEGRO_BITMAP *LED7 = NULL;
    
-   float bouncer_x = SCREEN_W / 2.0 - BOUNCER_SIZE / 2.0; //pongo la pelotita en el medio
-   float bouncer_y = SCREEN_H / 2.0 - BOUNCER_SIZE / 2.0;
-
-   bool key[4] = { false, false, false, false };
-   bool redraw = true;
-   bool doexit = false;
+   //bool key[4] = { false, false, false, false };
+   //bool redraw = true;
+   //bool doexit = false;
    
    if(!al_init()) {
       fprintf(stderr, "failed to initialize allegro!\n");
       return -1;
    }
- 
-         if(!al_install_keyboard()) {
+
+   al_init_font_addon(); // initialize the font addon
+   al_init_ttf_addon();// initialize the ttf (True Type Font) addon
+   
+      if(!al_install_keyboard()) {
       fprintf(stderr, "failed to initialize the keyboard!\n");
       return -1;
    }
@@ -55,6 +57,12 @@ int main(int argc, char** argv) {
    if(!display) {
       fprintf(stderr, "failed to create display!\n");
       al_destroy_timer(timer);
+      return -1;
+   }
+   
+   ALLEGRO_FONT *font = al_load_ttf_font("pirulen.ttf",30,0 );
+   if (!font){
+      fprintf(stderr, "Could not load 'pirulen.ttf'.\n");
       return -1;
    }
  
@@ -75,21 +83,21 @@ int main(int argc, char** argv) {
    } 
    
    al_set_target_bitmap(LED0);
-   al_clear_to_color(al_map_rgb(255, 0, 255));
+   al_clear_to_color(al_map_rgb(255, 0, 0));
    al_set_target_bitmap(LED1);
-   al_clear_to_color(al_map_rgb(255, 0, 255));
+   al_clear_to_color(al_map_rgb(255, 0, 0));
    al_set_target_bitmap(LED2);
-   al_clear_to_color(al_map_rgb(255, 0, 255));
+   al_clear_to_color(al_map_rgb(255, 0, 0));
    al_set_target_bitmap(LED3);
-   al_clear_to_color(al_map_rgb(255, 0, 255));
+   al_clear_to_color(al_map_rgb(255, 0, 0));
    al_set_target_bitmap(LED4);
-   al_clear_to_color(al_map_rgb(255, 0, 255));
+   al_clear_to_color(al_map_rgb(255, 0, 0));
    al_set_target_bitmap(LED5);
-   al_clear_to_color(al_map_rgb(255, 0, 255));
+   al_clear_to_color(al_map_rgb(255, 0, 0));
    al_set_target_bitmap(LED6);
-   al_clear_to_color(al_map_rgb(255, 0, 255));
+   al_clear_to_color(al_map_rgb(255, 0, 0));
    al_set_target_bitmap(LED7);
-   al_clear_to_color(al_map_rgb(255, 0, 255));
+   al_clear_to_color(al_map_rgb(255, 0, 0));
  
    al_set_target_bitmap(al_get_backbuffer(display));
  
@@ -128,7 +136,9 @@ int main(int argc, char** argv) {
       }
         
          al_clear_to_color(al_map_rgb(0,0,0));
- 
+         
+         
+         al_draw_text(font, al_map_rgb(255,255,255), SCREEN_W/2, (SCREEN_H/5),ALLEGRO_ALIGN_CENTER, "Banco de Pruebas");
          al_draw_bitmap(LED0, 50, 300, 0);
          al_draw_bitmap(LED1, 150, 300, 0);
          al_draw_bitmap(LED2, 250, 300, 0);
