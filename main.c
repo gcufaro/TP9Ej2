@@ -17,6 +17,10 @@ const int SCREEN_W = 850;
 const int SCREEN_H = 600;
 const int BOUNCER_SIZE = 32;
 
+void encender(ALLEGRO_BITMAP *LED0a, ALLEGRO_DISPLAY *displaya, int numa);
+void apagar(ALLEGRO_BITMAP *LED0b, ALLEGRO_DISPLAY *displayb, int numb);
+
+
 int main(int argc, char** argv) {
    ALLEGRO_DISPLAY *display = NULL;
    ALLEGRO_EVENT_QUEUE *event_queue = NULL;
@@ -147,11 +151,11 @@ int main(int argc, char** argv) {
          al_draw_bitmap(LED5, 550, 300, 0);
          al_draw_bitmap(LED6, 650, 300, 0);
          al_draw_bitmap(LED7, 750, 300, 0);
+         //encender(LED4,display,4);
          al_flip_display();
        
 
    }
-   
    
    al_destroy_bitmap(LED0);
    al_destroy_bitmap(LED1);
@@ -169,3 +173,20 @@ int main(int argc, char** argv) {
    return(0);
 }
 
+void encender(ALLEGRO_BITMAP *LED0a, ALLEGRO_DISPLAY *displaya, int numa)
+{
+    numa=50+100*numa;
+   al_set_target_bitmap(LED0a);
+   al_clear_to_color(al_map_rgb(255, 0, 0));
+   al_set_target_bitmap(al_get_backbuffer(displaya));
+   al_draw_bitmap(LED0a, numa, 300, 0);
+}
+
+void apagar(ALLEGRO_BITMAP *LED0b, ALLEGRO_DISPLAY *displayb, int numb)
+{
+    numb=50+100*numb;
+   al_set_target_bitmap(LED0b);
+   al_clear_to_color(al_map_rgb(0, 0, 0));
+   al_set_target_bitmap(al_get_backbuffer(displayb));
+   al_draw_bitmap(LED0b, numb, 300, 0);
+}
