@@ -17,7 +17,7 @@ const int SCREEN_W = 850;
 const int SCREEN_H = 600;
 const int BOUNCER_SIZE = 32;
 enum MYKEYS {
-   KEY_0, KEY_1, KEY_2, KEY_3, KEY_4, KEY_5, KEY_6, KEY_7, KEY_8
+   KEY_0, KEY_1, KEY_2, KEY_3, KEY_4, KEY_5, KEY_6, KEY_7, KEY_8, KEY_B, KEY_C, KEY_S
 };
 //enum MYKEYS {
   // KEY_UP, KEY_DOWN, KEY_LEFT, KEY_RIGHT
@@ -41,7 +41,7 @@ int main(int argc, char** argv) {
    ALLEGRO_BITMAP *LED7 = NULL;
    //bool key[4] = { false, false, false, false };
 
-   bool key[9] = { false, false, false, false, false, false, false, false, false};
+   bool key[12] = { false, false, false, false, false, false, false, false, false, false, false, false};
    bool redraw = true;
    bool doexit = false;
    
@@ -183,6 +183,26 @@ int main(int argc, char** argv) {
          if(key[KEY_8]) { //luego lo vinculo con la tecla que apreté.
                  encender(LED7,display,7);
          }
+         if(key[KEY_C]) { //luego lo vinculo con la tecla que apreté.
+                 apagar(LED0,display,0);
+                 apagar(LED1,display,1);
+                 apagar(LED2,display,2);
+                 apagar(LED3,display,3);
+                 apagar(LED4,display,4);
+                 apagar(LED5,display,5);
+                 apagar(LED6,display,6);
+                 apagar(LED7,display,7);
+         }
+         if(key[KEY_S]) { //luego lo vinculo con la tecla que apreté.
+                 encender(LED0,display,0);
+                 encender(LED1,display,1);
+                 encender(LED2,display,2);
+                 encender(LED3,display,3);
+                 encender(LED4,display,4);
+                 encender(LED5,display,5);
+                 encender(LED6,display,6);
+                 encender(LED7,display,7);
+         }
  
          redraw = true;
       }
@@ -214,6 +234,12 @@ int main(int argc, char** argv) {
                break;
             case ALLEGRO_KEY_8:
                key[KEY_8] = true;
+               break;
+            case ALLEGRO_KEY_C:
+               key[KEY_C] = true;
+               break;
+            case ALLEGRO_KEY_S:
+               key[KEY_S] = true;
                break;
  
          }
