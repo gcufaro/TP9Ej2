@@ -16,6 +16,12 @@ const float FPS = 60;
 const int SCREEN_W = 850;
 const int SCREEN_H = 600;
 const int BOUNCER_SIZE = 32;
+enum MYKEYS {
+   KEY_0, KEY_1, KEY_2, KEY_3, KEY_4, KEY_5, KEY_6, KEY_7, KEY_8
+};
+//enum MYKEYS {
+  // KEY_UP, KEY_DOWN, KEY_LEFT, KEY_RIGHT
+//};
 
 void encender(ALLEGRO_BITMAP *LED0a, ALLEGRO_DISPLAY *displaya, int numa);
 void apagar(ALLEGRO_BITMAP *LED0b, ALLEGRO_DISPLAY *displayb, int numb);
@@ -33,10 +39,11 @@ int main(int argc, char** argv) {
    ALLEGRO_BITMAP *LED5 = NULL;
    ALLEGRO_BITMAP *LED6 = NULL;
    ALLEGRO_BITMAP *LED7 = NULL;
-   
    //bool key[4] = { false, false, false, false };
-   //bool redraw = true;
-   //bool doexit = false;
+
+   bool key[9] = { false, false, false, false, false, false, false, false, false};
+   bool redraw = true;
+   bool doexit = false;
    
    if(!al_init()) {
       fprintf(stderr, "failed to initialize allegro!\n");
@@ -123,35 +130,110 @@ int main(int argc, char** argv) {
    al_register_event_source(event_queue, al_get_display_event_source(display));
  
    al_register_event_source(event_queue, al_get_timer_event_source(timer));
- 
+   
+   al_register_event_source(event_queue, al_get_keyboard_event_source()); //meti los tres eventos en la misma cola
+
    al_clear_to_color(al_map_rgb(0,0,0));
  
    al_flip_display();
  
    al_start_timer(timer);   
    
-   while(1)
+   while(!doexit)
    {
        ALLEGRO_EVENT ev;
        al_wait_for_event(event_queue, &ev);
        
-      if(ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
-         break;
-      }
         
          al_clear_to_color(al_map_rgb(0,0,0));
          
          
          al_draw_text(font, al_map_rgb(255,255,255), SCREEN_W/2, (SCREEN_H/5),ALLEGRO_ALIGN_CENTER, "Banco de Pruebas");
-         al_draw_bitmap(LED0, 50, 300, 0);
-         al_draw_bitmap(LED1, 150, 300, 0);
-         al_draw_bitmap(LED2, 250, 300, 0);
-         al_draw_bitmap(LED3, 350, 300, 0);
-         al_draw_bitmap(LED4, 450, 300, 0);
-         al_draw_bitmap(LED5, 550, 300, 0);
-         al_draw_bitmap(LED6, 650, 300, 0);
-         al_draw_bitmap(LED7, 750, 300, 0);
-         //encender(LED4,display,4);
+         //al_draw_bitmap(LED0, 50, 300, 0);
+         //al_draw_bitmap(LED1, 150, 300, 0);
+         //al_draw_bitmap(LED2, 250, 300, 0);
+         //al_draw_bitmap(LED3, 350, 300, 0);
+         //al_draw_bitmap(LED4, 450, 300, 0);
+         //al_draw_bitmap(LED5, 550, 300, 0);
+         //al_draw_bitmap(LED6, 650, 300, 0);
+         //al_draw_bitmap(LED7, 750, 300, 0);
+
+      if(ev.type == ALLEGRO_EVENT_TIMER) { //me fijo si hubo evento de timer
+         if(key[KEY_1]) { //luego lo vinculo con la tecla que apreté.
+                 encender(LED0,display,0);
+         }
+         if(key[KEY_2]) { //luego lo vinculo con la tecla que apreté.
+                 encender(LED1,display,1);
+         }
+         if(key[KEY_3]) { //luego lo vinculo con la tecla que apreté.
+                 encender(LED2,display,2);
+         }
+         if(key[KEY_4]) { //luego lo vinculo con la tecla que apreté.
+                 encender(LED3,display,3);
+         }
+         if(key[KEY_5]) { //luego lo vinculo con la tecla que apreté.
+                 encender(LED4,display,4);
+         }
+         if(key[KEY_6]) { //luego lo vinculo con la tecla que apreté.
+                 encender(LED5,display,5);
+         }
+         if(key[KEY_7]) { //luego lo vinculo con la tecla que apreté.
+                 encender(LED6,display,6);
+         }
+         if(key[KEY_8]) { //luego lo vinculo con la tecla que apreté.
+                 encender(LED7,display,7);
+         }
+ 
+         redraw = true;
+      }
+      else if(ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
+         break;
+      }
+      else if(ev.type == ALLEGRO_EVENT_KEY_DOWN) { //quiero registrar solo el momento que presione
+         switch(ev.keyboard.keycode) {
+            case ALLEGRO_KEY_1:
+               key[KEY_1] = true;
+               break;
+            case ALLEGRO_KEY_2:
+               key[KEY_2] = true;
+               break;
+            case ALLEGRO_KEY_3:
+               key[KEY_3] = true;
+               break;
+            case ALLEGRO_KEY_4:
+               key[KEY_4] = true;
+               break;
+            case ALLEGRO_KEY_5:
+               key[KEY_5] = true;
+               break;
+            case ALLEGRO_KEY_6:
+               key[KEY_6] = true;
+               break;
+            case ALLEGRO_KEY_7:
+               key[KEY_7] = true;
+               break;
+            case ALLEGRO_KEY_8:
+               key[KEY_8] = true;
+               break;
+ 
+         }
+      }
+      else if(ev.type == ALLEGRO_EVENT_KEY_UP) { //cuando suelto, quiero que el programa lo registre
+         switch(ev.keyboard.keycode) {
+             case ALLEGRO_KEY_ESCAPE:
+               doexit = true;
+               break;
+         }
+      }
+
+         
+         
+         
+         
+         
+         
+         
+         
          al_flip_display();
        
 
