@@ -12,12 +12,12 @@
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_ttf.h>
 
-const float FPS = 60;
+const float FPS = 10;
 const int SCREEN_W = 850;
 const int SCREEN_H = 600;
 const int BOUNCER_SIZE = 32;
 enum MYKEYS {
-   KEY_0, KEY_1, KEY_2, KEY_3, KEY_4, KEY_5, KEY_6, KEY_7, KEY_8, KEY_B, KEY_C, KEY_S
+   KEY_0, KEY_1, KEY_2, KEY_3, KEY_4, KEY_5, KEY_6, KEY_7, KEY_8, KEY_B, KEY_C, KEY_S,
 };
 //enum MYKEYS {
   // KEY_UP, KEY_DOWN, KEY_LEFT, KEY_RIGHT
@@ -63,6 +63,8 @@ int main(int argc, char** argv) {
       fprintf(stderr, "failed to create timer!\n");
       return -1;
    }
+   
+
  
    display = al_create_display(800,600);
    if(!display) {
@@ -139,13 +141,15 @@ int main(int argc, char** argv) {
  
    al_start_timer(timer);   
    
+   al_clear_to_color(al_map_rgb(0,0,0));
+   
    while(!doexit)
    {
        ALLEGRO_EVENT ev;
        al_wait_for_event(event_queue, &ev);
        
         
-         al_clear_to_color(al_map_rgb(0,0,0));
+
          
          
          al_draw_text(font, al_map_rgb(255,255,255), SCREEN_W/2, (SCREEN_H/5),ALLEGRO_ALIGN_CENTER, "Banco de Pruebas");
@@ -161,48 +165,50 @@ int main(int argc, char** argv) {
       if(ev.type == ALLEGRO_EVENT_TIMER) { //me fijo si hubo evento de timer
          if(key[KEY_1]) { //luego lo vinculo con la tecla que apreté.
                  encender(LED0,display,0);
-         }
+         }  else apagar(LED0,display,0);
          if(key[KEY_2]) { //luego lo vinculo con la tecla que apreté.
                  encender(LED1,display,1);
-         }
+         }  else apagar(LED1,display,1);
          if(key[KEY_3]) { //luego lo vinculo con la tecla que apreté.
                  encender(LED2,display,2);
-         }
+         }  else apagar(LED2,display,2);
          if(key[KEY_4]) { //luego lo vinculo con la tecla que apreté.
                  encender(LED3,display,3);
-         }
+         }  else apagar(LED3,display,3);
          if(key[KEY_5]) { //luego lo vinculo con la tecla que apreté.
                  encender(LED4,display,4);
-         }
+         }  else apagar(LED4,display,4);
          if(key[KEY_6]) { //luego lo vinculo con la tecla que apreté.
                  encender(LED5,display,5);
-         }
+         }  else apagar(LED5,display,5);
          if(key[KEY_7]) { //luego lo vinculo con la tecla que apreté.
                  encender(LED6,display,6);
-         }
+         }  else apagar(LED6,display,6);
          if(key[KEY_8]) { //luego lo vinculo con la tecla que apreté.
                  encender(LED7,display,7);
-         }
-         if(key[KEY_C]) { //luego lo vinculo con la tecla que apreté.
-                 apagar(LED0,display,0);
-                 apagar(LED1,display,1);
-                 apagar(LED2,display,2);
-                 apagar(LED3,display,3);
-                 apagar(LED4,display,4);
-                 apagar(LED5,display,5);
-                 apagar(LED6,display,6);
-                 apagar(LED7,display,7);
-         }
-         if(key[KEY_S]) { //luego lo vinculo con la tecla que apreté.
-                 encender(LED0,display,0);
-                 encender(LED1,display,1);
-                 encender(LED2,display,2);
-                 encender(LED3,display,3);
-                 encender(LED4,display,4);
-                 encender(LED5,display,5);
-                 encender(LED6,display,6);
-                 encender(LED7,display,7);
-         }
+         }  else apagar(LED7,display,7);
+    //     if(key[KEY_C]) { //luego lo vinculo con la tecla que apreté.
+    //             apagar(LED0,display,0);
+    //             apagar(LED1,display,1);
+   //              apagar(LED2,display,2);
+    //             apagar(LED3,display,3);
+    //             apagar(LED4,display,4);
+    //             apagar(LED5,display,5);
+  //               apagar(LED6,display,6);
+    //             apagar(LED7,display,7);
+    //             key[KEY_C]=false;
+    //     }
+    //     if(key[KEY_S]) { //luego lo vinculo con la tecla que apreté.
+    //             encender(LED0,display,0);
+    //             encender(LED1,display,1);
+     //            encender(LED2,display,2);
+     //            encender(LED3,display,3);
+   //              encender(LED4,display,4);
+    //             encender(LED5,display,5);
+  ///               encender(LED6,display,6);
+     //            encender(LED7,display,7);
+     //            key[KEY_S]=false;
+     //    }
  
          redraw = true;
       }
@@ -212,35 +218,58 @@ int main(int argc, char** argv) {
       else if(ev.type == ALLEGRO_EVENT_KEY_DOWN) { //quiero registrar solo el momento que presione
          switch(ev.keyboard.keycode) {
             case ALLEGRO_KEY_1:
-               key[KEY_1] = true;
+               key[KEY_1] = !key[KEY_1];
                break;
             case ALLEGRO_KEY_2:
-               key[KEY_2] = true;
+               key[KEY_2] = !key[KEY_2];
                break;
             case ALLEGRO_KEY_3:
-               key[KEY_3] = true;
+               key[KEY_3] = !key[KEY_3];
                break;
             case ALLEGRO_KEY_4:
-               key[KEY_4] = true;
+               key[KEY_4] = !key[KEY_4];
                break;
             case ALLEGRO_KEY_5:
-               key[KEY_5] = true;
+               key[KEY_5] = !key[KEY_5];
                break;
             case ALLEGRO_KEY_6:
-               key[KEY_6] = true;
+               key[KEY_6] = !key[KEY_6];
                break;
             case ALLEGRO_KEY_7:
-               key[KEY_7] = true;
+               key[KEY_7] = !key[KEY_7];
                break;
             case ALLEGRO_KEY_8:
-               key[KEY_8] = true;
+               key[KEY_8] = !key[KEY_8];
                break;
             case ALLEGRO_KEY_C:
-               key[KEY_C] = true;
+               key[KEY_1] = false;
+               key[KEY_2] = false;
+               key[KEY_3] = false;
+               key[KEY_4] = false;
+               key[KEY_5] = false;
+               key[KEY_6] = false;
+               key[KEY_7] = false;
+               key[KEY_8] = false;
                break;
             case ALLEGRO_KEY_S:
-               key[KEY_S] = true;
+               key[KEY_1] = true;
+               key[KEY_2] = true;
+               key[KEY_3] = true;
+               key[KEY_4] = true;
+               key[KEY_5] = true;
+               key[KEY_6] = true;
+               key[KEY_7] = true;
+               key[KEY_8] = true;
                break;
+            case ALLEGRO_KEY_B:
+                apagar(LED0,display,0);
+                apagar(LED1,display,1);
+                apagar(LED2,display,2);
+                apagar(LED3,display,3);
+                apagar(LED4,display,4);
+                apagar(LED5,display,5);
+                apagar(LED6,display,6);
+                apagar(LED7,display,7);
  
          }
       }
