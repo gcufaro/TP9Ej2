@@ -1,7 +1,22 @@
 /* 
  * File:   main.c
- * Author: Mercedes
+ * Programación I - Primer Cuatrimestre de 2015
+ * Trabajo Práctico N°9:  Estructuras, Uniones y Bitfields.
+
+ * Ejercicio N°4
+ * Grupo N°2
+ * Integrantes:
+ * Cufaro, Gabriel Agustín
+ * De Ruschi, Agustin
+ * Luo, Leandro Adrian
+ * Michel, Bernardo
  *
+ * INSTRUCCIONES:
+ * Presione las teclas 1-9 para encender o apagar el LED correspondiente.
+ * Presione la tecla B para que los LEDs encendidos destellen.
+ * Presione la tecla C para apagar todos los LEDs.
+ * Presione la tecla S para encender todos los LEDs.
+ * 
  * Created on 26 de mayo de 2015, 23:05
  */
 
