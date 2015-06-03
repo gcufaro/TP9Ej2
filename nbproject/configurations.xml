@@ -50,6 +50,7 @@
             <linkerOptionItem>`pkg-config --libs allegro_physfs-5.0`</linkerOptionItem>
             <linkerOptionItem>`pkg-config --libs allegro_primitives-5.0`</linkerOptionItem>
             <linkerOptionItem>`pkg-config --libs allegro_ttf-5.0`</linkerOptionItem>
+            <linkerLibLibItem>allegro-5.0.10-monolith-mt</linkerLibLibItem>
           </linkerLibItems>
         </linkerTool>
       </compileType>

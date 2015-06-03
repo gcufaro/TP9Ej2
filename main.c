@@ -15,6 +15,7 @@
  * Presione la tecla B para que los LEDs encendidos destellen.
  * Presione la tecla C para apagar todos los LEDs.
  * Presione la tecla S para encender todos los LEDs.
+ * Para finalizar el programa, presione esc.
  * 
  * Created on 26 de mayo de 2015, 23:05
  */
@@ -26,19 +27,15 @@
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_ttf.h>
 
-const float FPS = 10;
+const float FPS = 10;                           //constantes del programa
 const int SCREEN_W = 850;
 const int SCREEN_H = 600;
 const int BOUNCER_SIZE = 32;
-enum MYKEYS {
+enum MYKEYS {                                   //teclas a utilizar en el programa
    KEY_0, KEY_1, KEY_2, KEY_3, KEY_4, KEY_5, KEY_6, KEY_7, KEY_8, KEY_B, KEY_C, KEY_S,
 };
-//enum MYKEYS {
-  // KEY_UP, KEY_DOWN, KEY_LEFT, KEY_RIGHT
-//};
 
-
-typedef  struct
+typedef  struct                                 //defino mi campo de bits
 {
  unsigned int  bit0        : 1;
  unsigned int  bit1	   : 1;
@@ -50,7 +47,7 @@ typedef  struct
  unsigned int  bit7        : 1;
 } MYPORT;
 
-void encender(ALLEGRO_BITMAP *LED0a, ALLEGRO_DISPLAY *displaya, int numa);
+void encender(ALLEGRO_BITMAP *LED0a, ALLEGRO_DISPLAY *displaya, int numa);  //prototipos de las funciones
 void apagar(ALLEGRO_BITMAP *LED0b, ALLEGRO_DISPLAY *displayb, int numb);
 void bitSet(int a, MYPORT *p1);
 void bitClr(int b, MYPORT *p2);
@@ -59,14 +56,12 @@ unsigned int bitGet(int d, MYPORT *p4);
 void maskOn(char mask, MYPORT *p5);
 void maskOff(char mask, MYPORT *p6);
 
-
-
 int main(int argc, char** argv) {
     
-    MYPORT portA;
-    MYPORT*p2port;
+    MYPORT portA;           //creo e inicializo el puerto A y relleno el campo de bits en 0.
+    MYPORT *p2port;
     p2port=&portA;
-    portA.bit0=0;
+    portA.bit0=0;           
     portA.bit1=0;
     portA.bit2=0;
     portA.bit3=0;
@@ -75,8 +70,7 @@ int main(int argc, char** argv) {
     portA.bit6=0;
     portA.bit7=0;
             
-    
-   ALLEGRO_DISPLAY *display = NULL;
+   ALLEGRO_DISPLAY *display = NULL;             //creo los punteros del programa mediante allegro
    ALLEGRO_EVENT_QUEUE *event_queue = NULL;
    ALLEGRO_TIMER *timer = NULL;
    ALLEGRO_BITMAP *LED0 = NULL;
@@ -87,47 +81,56 @@ int main(int argc, char** argv) {
    ALLEGRO_BITMAP *LED5 = NULL;
    ALLEGRO_BITMAP *LED6 = NULL;
    ALLEGRO_BITMAP *LED7 = NULL;
-   //bool key[4] = { false, false, false, false };
 
    bool key[12] = { false, false, false, false, false, false, false, false, false, false, false, false};
    bool redraw = true;
    bool doexit = false;
    
    if(!al_init()) {
-      fprintf(stderr, "failed to initialize allegro!\n");
+      fprintf(stderr, "No se puede inicializar Allegro\n");
       return -1;
    }
 
-   al_init_font_addon(); // initialize the font addon
-   al_init_ttf_addon();// initialize the ttf (True Type Font) addon
+   al_init_font_addon(); // Inicializo el addon de las fuentes
+   al_init_ttf_addon();// Inicializo el addon ttf
    
       if(!al_install_keyboard()) {
-      fprintf(stderr, "failed to initialize the keyboard!\n");
+      fprintf(stderr, "No se puede inicializar el Teclado!\n");
       return -1;
    }
 
-   timer = al_create_timer(1.0 / FPS);
+   timer = al_create_timer(1.0 / FPS);      //Seteo el timer con su Frame Per Second correspondiente
    if(!timer) {
       fprintf(stderr, "failed to create timer!\n");
       return -1;
    }
    
-
- 
-   display = al_create_display(800,600);
+   display = al_create_display(800,600);    //Creo mi display
    if(!display) {
       fprintf(stderr, "failed to create display!\n");
       al_destroy_timer(timer);
       return -1;
    }
    
-   ALLEGRO_FONT *font = al_load_ttf_font("pirulen.ttf",30,0 );
+   ALLEGRO_FONT *font = al_load_ttf_font("pirulen.ttf",30,0 );  //Levanto las tres fuentes a utilizar
    if (!font){
-      fprintf(stderr, "Could not load 'pirulen.ttf'.\n");
+      fprintf(stderr, "No se pudo cargar 'pirulen.ttf'.\n");
+      return -1;
+   }
+   
+   ALLEGRO_FONT *font2 = al_load_ttf_font("calibri.ttf",15,0);
+   if (!font2){
+      fprintf(stderr, "No se pudo cargar 'calibri.ttf'.\n");
+      return -1;
+   }
+   
+   ALLEGRO_FONT *font3 = al_load_ttf_font("calibri.ttf",20,0);
+   if (!font3){
+      fprintf(stderr, "No se pudo cargar 'calibri.ttf'.\n");
       return -1;
    }
  
-   LED0 = al_create_bitmap(BOUNCER_SIZE, BOUNCER_SIZE);
+   LED0 = al_create_bitmap(BOUNCER_SIZE, BOUNCER_SIZE);         //Creo mi bitmaps de LEDs
    LED1 = al_create_bitmap(BOUNCER_SIZE, BOUNCER_SIZE);
    LED2 = al_create_bitmap(BOUNCER_SIZE, BOUNCER_SIZE);
    LED3 = al_create_bitmap(BOUNCER_SIZE, BOUNCER_SIZE);
@@ -137,13 +140,13 @@ int main(int argc, char** argv) {
    LED7 = al_create_bitmap(BOUNCER_SIZE, BOUNCER_SIZE);
    
    if(!LED0 || !LED1 || !LED2 || !LED3 || !LED4 || !LED5 || !LED6 || !LED7) {
-      fprintf(stderr, "failed to create bouncer bitmap!\n");
+      fprintf(stderr, "No se pudo crear los bitmaps de LEDs.\n");
       al_destroy_display(display);
       al_destroy_timer(timer);
       return -1;
    } 
    
-   al_set_target_bitmap(LED0);
+   al_set_target_bitmap(LED0);                  //Preparo para colorear en rojo los LEDs
    al_clear_to_color(al_map_rgb(255, 0, 0));
    al_set_target_bitmap(LED1);
    al_clear_to_color(al_map_rgb(255, 0, 0));
@@ -160,9 +163,9 @@ int main(int argc, char** argv) {
    al_set_target_bitmap(LED7);
    al_clear_to_color(al_map_rgb(255, 0, 0));
  
-   al_set_target_bitmap(al_get_backbuffer(display));
+   al_set_target_bitmap(al_get_backbuffer(display));    //Pongo los bitmaps en el buffer
  
-   event_queue = al_create_event_queue();
+   event_queue = al_create_event_queue();               //Creo la cola de eventos
    if(!event_queue) {
       fprintf(stderr, "failed to create event_queue!\n");
         al_destroy_bitmap(LED0);
@@ -177,13 +180,13 @@ int main(int argc, char** argv) {
       return -1;
    }
  
-   al_register_event_source(event_queue, al_get_display_event_source(display));
+   al_register_event_source(event_queue, al_get_display_event_source(display)); //Creo lso eventos de timer y display
  
    al_register_event_source(event_queue, al_get_timer_event_source(timer));
    
-   al_register_event_source(event_queue, al_get_keyboard_event_source()); //meti los tres eventos en la misma cola
+   al_register_event_source(event_queue, al_get_keyboard_event_source()); //Meto los tres eventos en la misma cola
 
-   al_clear_to_color(al_map_rgb(0,0,0));
+   al_clear_to_color(al_map_rgb(0,0,0));        //Mi pantalla a utilizar será negra.
  
    al_flip_display();
  
@@ -194,14 +197,22 @@ int main(int argc, char** argv) {
    while(!doexit)
    {
        ALLEGRO_EVENT ev;
-       al_wait_for_event(event_queue, &ev);
+       al_wait_for_event(event_queue, &ev);         //Espero a un evento, y luego escribo la pantalla con los datos relevantes
        
-        
+         al_draw_text(font3, al_map_rgb(255,255,255), 50, 20, ALLEGRO_ALIGN_LEFT, "Grupo N°2: Cufaro, De Ruschi, Luo, Michel");
+         al_draw_text(font3, al_map_rgb(255,255,255), 50, 50, ALLEGRO_ALIGN_LEFT, "Trabajo Práctico N°9:  Estructuras, Uniones y Bitfields");
 
-         
-         
          al_draw_text(font, al_map_rgb(255,255,255), SCREEN_W/2, (SCREEN_H/5),ALLEGRO_ALIGN_CENTER, "Banco de Pruebas");
-         //al_draw_bitmap(LED0, 50, 300, 0);
+         al_draw_text(font2, al_map_rgb(255,255,255), 65, 350, ALLEGRO_ALIGN_CENTER, "LED 1");
+         al_draw_text(font2, al_map_rgb(255,255,255), 165, 350, ALLEGRO_ALIGN_CENTER, "LED 2");
+         al_draw_text(font2, al_map_rgb(255,255,255), 265, 350, ALLEGRO_ALIGN_CENTER, "LED 3");
+         al_draw_text(font2, al_map_rgb(255,255,255), 365, 350, ALLEGRO_ALIGN_CENTER, "LED 4");
+         al_draw_text(font2, al_map_rgb(255,255,255), 465, 350, ALLEGRO_ALIGN_CENTER, "LED 5");
+         al_draw_text(font2, al_map_rgb(255,255,255), 565, 350, ALLEGRO_ALIGN_CENTER, "LED 6");
+         al_draw_text(font2, al_map_rgb(255,255,255), 665, 350, ALLEGRO_ALIGN_CENTER, "LED 7");
+         al_draw_text(font2, al_map_rgb(255,255,255), 765, 350, ALLEGRO_ALIGN_CENTER, "LED 8");
+
+         //al_draw_bitmap(LED0, 50, 300, 0); //Pruebas para los LEDs
          //al_draw_bitmap(LED1, 150, 300, 0);
          //al_draw_bitmap(LED2, 250, 300, 0);
          //al_draw_bitmap(LED3, 350, 300, 0);
@@ -260,11 +271,11 @@ int main(int argc, char** argv) {
  
          redraw = true;
       }
-      else if(ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
+      else if(ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE) { //En el caso que se presione la tecla esc
          break;
       }
       else if(ev.type == ALLEGRO_EVENT_KEY_DOWN) { //quiero registrar solo el momento que presione
-         switch(ev.keyboard.keycode) {
+         switch(ev.keyboard.keycode) {              //en el caso que apriete una tecla interesante llamo a las subrutinas
             case ALLEGRO_KEY_1:
                bitToggle(0, p2port);
                break;
@@ -315,20 +326,10 @@ int main(int argc, char** argv) {
          }
       }
 
-         
-         
-         
-         
-         
-         
-         
-         
          al_flip_display();
-       
-
    }
    
-   al_destroy_bitmap(LED0);
+   al_destroy_bitmap(LED0);     //cierro todos los punteros que utilicé
    al_destroy_bitmap(LED1);
    al_destroy_bitmap(LED2);
    al_destroy_bitmap(LED3);
@@ -344,7 +345,7 @@ int main(int argc, char** argv) {
    return(0);
 }
 
-void encender(ALLEGRO_BITMAP *LED0a, ALLEGRO_DISPLAY *displaya, int numa)
+void encender(ALLEGRO_BITMAP *LED0a, ALLEGRO_DISPLAY *displaya, int numa)       //Uso las subrutinas del punto 1 con sus agregados de allegro
 {
     numa=50+100*numa;
    al_set_target_bitmap(LED0a);
@@ -507,15 +508,11 @@ void maskOn(char maskon, MYPORT *p5)
     if(1&maskon)
         p5->bit0=1;
     
-    
 //	*p5=(*p5|maskon);       //Prendo los bits que deseo con la máscara
 }
 
-
-
 void maskOff(char maskoff, MYPORT *p6)
 {
-    
     if(128&maskoff)
         p6->bit7=0;
     if(64&maskoff)
@@ -532,7 +529,6 @@ void maskOff(char maskoff, MYPORT *p6)
         p6->bit1=0;
     if(1&maskoff)
         p6->bit0=0;
-    
     
 //	*p6=(*p6&(!maskoff));	//Apago los bits que deseo con la màscara
 }
