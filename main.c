@@ -2,7 +2,6 @@
  * File:   main.c
  * Programación I - Primer Cuatrimestre de 2015
  * Trabajo Práctico N°9:  Estructuras, Uniones y Bitfields.
-
  * Ejercicio N°4
  * Grupo N°2
  * Integrantes:
