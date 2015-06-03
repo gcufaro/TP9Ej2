@@ -20,10 +20,10 @@
  * Created on 26 de mayo de 2015, 23:05
  */
 
-#include "stdio.h"
-#include "allegro5/allegro.h"
-#include "allegro5/allegro_image.h"
-#include "allegro5/allegro_native_dialog.h"
+#include <stdio.h>
+#include <allegro5/allegro.h>
+#include <allegro5/allegro_image.h>
+#include <allegro5/allegro_native_dialog.h>
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_ttf.h>
 
